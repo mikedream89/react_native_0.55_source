@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/rn55.iml" filepath="$PROJECT_DIR$/.idea/modules/rn55.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/741560148/rn55.ReactAndroid.iml" filepath="$PROJECT_DIR$/.idea/modules/741560148/rn55.ReactAndroid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/741560148/rn55.ReactAndroid.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/741560148/rn55.ReactAndroid.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/741560148/rn55.ReactAndroid.main.iml" filepath="$PROJECT_DIR$/.idea/modules/741560148/rn55.ReactAndroid.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/741560148/rn55.ReactAndroid.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/741560148/rn55.ReactAndroid.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/rn55.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/rn55.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/rn55.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/rn55.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/rn55.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/rn55.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/rn55.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/rn55.app.unitTest.iml" />
+    </modules>
+  </component>
+</project>
