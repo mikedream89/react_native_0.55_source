@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 
 #include <folly/portability/Time.h>
+
+#include <folly/CPortability.h>
 #include <folly/Likely.h>
 
 #include <assert.h>
@@ -25,22 +27,23 @@ template <typename _Rep, typename _Period>
 static void duration_to_ts(
     std::chrono::duration<_Rep, _Period> d,
     struct timespec* ts) {
-  ts->tv_sec = std::chrono::duration_cast<std::chrono::seconds>(d).count();
-  ts->tv_nsec = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                    d % std::chrono::seconds(1))
-                    .count();
+  ts->tv_sec =
+      time_t(std::chrono::duration_cast<std::chrono::seconds>(d).count());
+  ts->tv_nsec = long(std::chrono::duration_cast<std::chrono::nanoseconds>(
+                         d % std::chrono::seconds(1))
+                         .count());
 }
 
-#if !FOLLY_HAVE_CLOCK_GETTIME
+#if !FOLLY_HAVE_CLOCK_GETTIME || FOLLY_FORCE_CLOCK_GETTIME_DEFINITION
 #if __MACH__
 #include <errno.h>
-#include <mach/mach_init.h>
-#include <mach/mach_port.h>
-#include <mach/mach_time.h>
-#include <mach/mach_types.h>
-#include <mach/task.h>
-#include <mach/thread_act.h>
-#include <mach/vm_map.h>
+#include <mach/mach_init.h> // @manual
+#include <mach/mach_port.h> // @manual
+#include <mach/mach_time.h> // @manual
+#include <mach/mach_types.h> // @manual
+#include <mach/task.h> // @manual
+#include <mach/thread_act.h> // @manual
+#include <mach/vm_map.h> // @manual
 
 static std::chrono::nanoseconds time_value_to_ns(time_value_t t) {
   return std::chrono::seconds(t.seconds) +
@@ -96,7 +99,7 @@ static int clock_thread_cputime(struct timespec* ts) {
   return 0;
 }
 
-int clock_gettime(clockid_t clk_id, struct timespec* ts) {
+FOLLY_ATTR_WEAK int clock_gettime(clockid_t clk_id, struct timespec* ts) {
   switch (clk_id) {
     case CLOCK_REALTIME: {
       auto now = std::chrono::system_clock::now().time_since_epoch();
@@ -171,26 +174,22 @@ extern "C" int clock_getres(clockid_t clock_id, struct timespec* res) {
     return -1;
   }
 
+  static constexpr size_t kNsPerSec = 1000000000;
   switch (clock_id) {
-    case CLOCK_MONOTONIC: {
-      LARGE_INTEGER freq = performanceFrequency();
-      if (freq.QuadPart == -1) {
-        errno = EINVAL;
-        return -1;
-      }
-
-      static constexpr size_t kNsPerSec = 1000000000;
-
-      res->tv_sec = 0;
-      res->tv_nsec = (long)((kNsPerSec + (freq.QuadPart >> 1)) / freq.QuadPart);
-      if (res->tv_nsec < 1) {
-        res->tv_nsec = 1;
-      }
-
+    case CLOCK_REALTIME: {
+      constexpr auto perSec = double(std::chrono::system_clock::period::num) /
+          std::chrono::system_clock::period::den;
+      res->tv_sec = time_t(perSec);
+      res->tv_nsec = time_t(perSec * kNsPerSec);
       return 0;
     }
-
-    case CLOCK_REALTIME:
+    case CLOCK_MONOTONIC: {
+      constexpr auto perSec = double(std::chrono::steady_clock::period::num) /
+          std::chrono::steady_clock::period::den;
+      res->tv_sec = time_t(perSec);
+      res->tv_nsec = time_t(perSec * kNsPerSec);
+      return 0;
+    }
     case CLOCK_PROCESS_CPUTIME_ID:
     case CLOCK_THREAD_CPUTIME_ID: {
       DWORD adj, timeIncrement;
@@ -201,7 +200,7 @@ extern "C" int clock_getres(clockid_t clock_id, struct timespec* res) {
       }
 
       res->tv_sec = 0;
-      res->tv_nsec = timeIncrement * 100;
+      res->tv_nsec = long(timeIncrement * 100);
       return 0;
     }
 
@@ -218,9 +217,10 @@ extern "C" int clock_gettime(clockid_t clock_id, struct timespec* tp) {
   }
 
   const auto unanosToTimespec = [](timespec* tp, unsigned_nanos t) -> int {
-    static constexpr unsigned_nanos one_sec(std::chrono::seconds(1));
-    tp->tv_sec = std::chrono::duration_cast<std::chrono::seconds>(t).count();
-    tp->tv_nsec = (t % one_sec).count();
+    static constexpr unsigned_nanos one_sec{std::chrono::seconds(1)};
+    tp->tv_sec =
+        time_t(std::chrono::duration_cast<std::chrono::seconds>(t).count());
+    tp->tv_nsec = long((t % one_sec).count());
     return 0;
   };
 
@@ -327,9 +327,10 @@ int nanosleep(const struct timespec* request, struct timespec* remain) {
   return 0;
 }
 
-char* strptime(const char* __restrict s,
-               const char* __restrict f,
-               struct tm* __restrict tm) {
+char* strptime(
+    const char* __restrict s,
+    const char* __restrict f,
+    struct tm* __restrict tm) {
   // Isn't the C++ standard lib nice? std::get_time is defined such that its
   // format parameters are the exact same as strptime. Of course, we have to
   // create a string stream first, and imbue it with the current C locale, and

@@ -1,0 +1,4 @@
+#Tue Mar 21 17:34:08 CST 2023
+base.0=/home/mark/Desktop/react_native_0.55_source/android/app/build/intermediates/dex/debug/mergeDexDebug/out/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

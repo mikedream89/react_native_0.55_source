@@ -1,0 +1,34 @@
+https://reactnative.cn/docs/0.67/building-from-source  官网源码编译步骤， 注意ndk版本
+
+react native 更新内容， 修改android溢出区域无法点击
+
+https://github.com/facebook/react-native/pull/29039/files#diff-62f003b9e0c5812a91a3602e71add6b582882214218d7eb839bb069a09a6584f
+
+打包aar ： ./gradlew :ReactAndroid:installArchives 
+
+/home/mark/Desktop/react_native_0.55_source/node_modules/react-native/ReactAndroid/build.gradle
+
+def findNdkBuildFullPath() {
+    // we allow to provide full path to ndk-build tool
+    if (hasProperty("ndk.command")) {
+        return property("ndk.command")
+    }
+    // or just a path to the containing directory
+    if (hasProperty("ndk.path")) {
+        def ndkDir = property("ndk.path")
+        return new File(ndkDir, getNdkBuildName()).getAbsolutePath()
+    }
+
+    if (System.getenv("ANDROID_NDK") != null) {
+        def ndkDir = System.getenv("ANDROID_NDK")
+        //修改ndk路径//*********************************************
+        return new File("/home/mark/Android/Sdk/ndk/android-ndk-r17c", getNdkBuildName()).getAbsolutePath()
+        //*********************************************
+    }
+
+    def ndkDir = android.ndkDirectory ? android.ndkDirectory.absolutePath : null
+    if (ndkDir) {
+        return new File(ndkDir, getNdkBuildName()).getAbsolutePath()
+    }
+    return null
+}

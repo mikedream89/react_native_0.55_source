@@ -1,23 +1,16 @@
 {
     "logs": [
         {
-            "outputFile": "/home/mark/Desktop/rn55/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-land/values-land.xml",
+            "outputFile": "/home/mark/Desktop/react_native_0.55_source/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-land/values-land.xml",
             "map": [
                 {
-                    "source": "/home/mark/.gradle/caches/transforms-1/files-1.1/appcompat-v7-23.0.1.aar/3e981a60e71f9222f9996418e2826d52/res/values-land/values-land.xml",
+                    "source": "/home/mark/.gradle/caches/transforms-2/files-2.1/1c548a9088a74bbd06fe98f0c8f39b2a/appcompat-1.1.0/res/values-land/values-land.xml",
                     "from": {
-                        "startLines": "4,7,10,13,16,17",
-                        "startColumns": "4,4,4,4,4,4",
-                        "startOffsets": "280,568,875,1171,1470,1541",
-                        "endColumns": "61,71,69,63,70,67",
-                        "endOffsets": "337,635,940,1230,1536,1604"
-                    },
-                    "to": {
-                        "startLines": "2,3,4,5,6,7",
-                        "startColumns": "4,4,4,4,4,4",
-                        "startOffsets": "55,117,189,259,323,394",
-                        "endColumns": "61,71,69,63,70,67",
-                        "endOffsets": "112,184,254,318,389,457"
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,125,196",
+                        "endColumns": "69,70,67",
+                        "endOffsets": "120,191,259"
                     }
                 }
             ]

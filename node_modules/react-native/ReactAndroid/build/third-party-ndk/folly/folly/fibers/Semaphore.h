@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,8 @@ namespace fibers {
  */
 class Semaphore {
  public:
-  explicit Semaphore(size_t tokenCount) : tokens_(tokenCount) {}
+  explicit Semaphore(size_t tokenCount)
+      : capacity_(tokenCount), tokens_(int64_t(capacity_)) {}
 
   Semaphore(const Semaphore&) = delete;
   Semaphore(Semaphore&&) = delete;
@@ -44,10 +45,13 @@ class Semaphore {
    */
   void wait();
 
+  size_t getCapacity() const;
+
  private:
   bool waitSlow();
   bool signalSlow();
 
+  size_t capacity_;
   // Atomic counter
   std::atomic<int64_t> tokens_;
   folly::Synchronized<std::queue<folly::fibers::Baton*>> waitList_;
