@@ -1,10 +1,20 @@
 {
     "logs": [
         {
-            "outputFile": "/home/mark/Desktop/react_native_0.55_source/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v16/values-v16.xml",
+            "outputFile": "/home/mark/Desktop/rn059/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v16/values-v16.xml",
             "map": [
                 {
-                    "source": "/home/mark/.gradle/caches/transforms-2/files-2.1/1c548a9088a74bbd06fe98f0c8f39b2a/appcompat-1.1.0/res/values-v16/values-v16.xml",
+                    "source": "/home/mark/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/e76234488b58f67790b789a72f014188/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                },
+                {
+                    "source": "/home/mark/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/e02700e40c9d08b38ef089e15176b051/res/values-v16/values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -20,16 +30,6 @@
                         "endLines": "6",
                         "endColumns": "12",
                         "endOffsets": "289"
-                    }
-                },
-                {
-                    "source": "/home/mark/.gradle/caches/transforms-2/files-2.1/de22bafab1b9cc97088d68eeb616568c/core-1.1.0/res/values-v16/values-v16.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "65",
-                        "endOffsets": "116"
                     }
                 }
             ]
